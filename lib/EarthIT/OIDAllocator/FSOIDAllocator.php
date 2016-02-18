@@ -5,6 +5,9 @@ use EarthIT_OIDAllocator_AllocationException as AllocException;
 
 class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 {
+	const VALID_NAME_REGEX = '/^[a-zA-Z0-9]+$/';
+	const VALID_NAME_OR_MD_FILE_REGEX = '/^([a-zA-Z0-9]+)(?:(?:\.counter)?\.json)?$/';
+	
 	protected $dataDir;
 	protected $updateListeners = array();
 	
@@ -16,8 +19,8 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		$this->updateListeners[] = $func;
 	}
 	
-	protected static function pathToString(array $path) {
-		return count($path) == 0 ? 'root' : implode('.',$path);
+	protected static function pathToString(array $path, $rootName='root') {
+		return count($path) == 0 ? $rootName : implode('.',$path);
 	}
 	
 	protected static function last(array $stuff) {
@@ -26,6 +29,13 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		return $thing;
 	}
 	
+	protected function spaceDir( array $path ) {
+		$path = self::validatePath($path);
+		$dir = $this->dataDir.'/root';
+		if( count($path) > 0 ) $dir .= '/'.implode('/',$path);
+		return $dir;
+	}
+
 	protected function infoFile( array $path, $ext='.json' ) {
 		$path = self::validatePath($path);
 		if( count($path) == 0 ) {
@@ -110,7 +120,7 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		foreach( $path as &$seg ) {
 			if( !is_scalar($seg) ) throw new Exception("Non-scalar path segment: ".gettype($seg));
 			$seg = (string)$seg;
-			if( !preg_match('/^[a-zA-Z0-9]+$/',$seg) ) {
+			if( !preg_match(self::VALID_NAME_REGEX,$seg) ) {
 				throw new Exception("Path segment contains invalid characters: $seg");
 			}
 		}
@@ -136,5 +146,22 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		}
 		
 		$this->updated("Updated info for ".self::pathToString($path));
+	}
+	
+	public function findInfo( array $path, array $options=array(), array &$thingsGoHere=array() ) {
+		$pathString = self::pathToString($path,'');
+		if( ($info = $this->getInfo($path)) !== null ) $thingsGoHere[$pathString] = $info;
+		$dir = $this->spaceDir($path);
+		if( is_dir($dir) ) {
+			$files = scandir($dir);
+			foreach( $files as $fn ) {
+				if( preg_match(self::VALID_NAME_OR_MD_FILE_REGEX,$fn,$bif) ) {
+					$subPath = $path;
+					$subPath[] = $bif[1];
+					$this->findInfo($subPath, $options, $thingsGoHere);
+				}
+			}
+		}
+		return $thingsGoHere;
 	}
 }

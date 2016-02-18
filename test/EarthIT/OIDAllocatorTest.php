@@ -51,4 +51,19 @@ abstract class EarthIT_OIDAllocatorTest extends EarthIT_OIDAllocator_TestCase
 			array('90000000009','90000000010','90000000011'),
 			$ids);
 	}
+	
+	public function testFindInfo() {
+		$lerk = array(array(),array(1,2),array(1,32),array(1,32,56));
+		foreach( $lerk as $ler ) {
+			$this->allocator->setInfo($ler, array('name'=>implode('#',$ler)));
+		}
+		
+		$all = $this->allocator->findInfo(array());
+		$this->assertEquals(array(
+			''=>array('name'=>''),
+			'1.2'=>array('name'=>'1#2'),
+			'1.32'=>array('name'=>'1#32'),
+			'1.32.56'=>array('name'=>'1#32#56')
+		), $all);
+	}
 }

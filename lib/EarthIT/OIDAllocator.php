@@ -13,4 +13,5 @@ interface EarthIT_OIDAllocator
 	public function allocate( array $namespacePath, $count, array $options=array() );
 	public function getInfo( array $path );
 	public function setInfo( array $path, array $info );
+	public function findInfo( array $path, array $options=array(), array &$thingsGoHere=array() );
 }
