@@ -6,9 +6,24 @@ use EarthIT_OIDAllocator_AllocationException as AllocException;
 class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 {
 	protected $dataDir;
+	protected $updateListeners = array();
 	
 	public function __construct( $dataDir ) {
 		$this->dataDir = $dataDir;
+	}
+	
+	public function addUpdateListener($func) {
+		$this->updateListeners[] = $func;
+	}
+	
+	protected static function pathToString(array $path) {
+		return count($path) == 0 ? 'root' : implode('.',$path);
+	}
+	
+	protected static function last(array $stuff) {
+		$thing = null;
+		foreach($stuff as $thing);
+		return $thing;
 	}
 	
 	protected function infoFile( array $path, $ext='.json' ) {
@@ -37,16 +52,20 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		return $rh;
 	}
 	
+	protected function updated($message) {
+		foreach( $this->updateListeners as $l ) call_user_func($l, array('message'=>$message));
+	}
+	
 	protected function allocateFromRegion( array $namespacePath, array $spaceInfo, $regionCode, $count ) {
 		if( $count == 0 ) return array(); // Nothing to it!
 		
 		if( !isset($spaceInfo['regions'][$regionCode]) ) {
-			throw new AException("No such region '$regionCode' in ".implode('.',$namespacePath));
+			throw new AException("No such region '$regionCode' in ".self::pathToString($namespacePath));
 		}
 		$regionInfo = $spaceInfo['regions'][$regionCode];
 		foreach( array('bottom','top') as $requiredKey ) {
 			if( !isset($regionInfo[$requiredKey]) ) {
-				throw new Exception("Region '$regionCode' in ".implode('.',$namespacePath)." doesn't indicate '$requiredKey'");
+				throw new Exception("Region '$regionCode' in ".self::pathToString($namespacePath)." doesn't indicate '$requiredKey'");
 			}
 		}
 		
@@ -82,7 +101,9 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		$info = $this->getInfo($namespacePath);
 		$defaultRegion = isset($info['defaultRegionCode']) ? $info['defaultRegionCode'] : OIDA::REGION_PROD;
 		$reg = isset($options[OIDA::REGION]) ? $options[OIDA::REGION] : $defaultRegion;
-		return $this->allocateFromRegion($namespacePath, $info, $reg, $count);
+		$ids = $this->allocateFromRegion($namespacePath, $info, $reg, $count);
+		$this->updated("Allocated $count from ".self::pathToString($namespacePath)." ending in ".self::last($ids));
+		return $ids;
 	}
 	
 	protected static function validatePath(array $path) {
@@ -113,5 +134,7 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		if( !file_exists($counterFile = $this->counterFile($path)) ) {
 			file_put_contents($counterFile, "{}\n");
 		}
+		
+		$this->updated("Updated info for ".self::pathToString($path));
 	}
 }
