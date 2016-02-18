@@ -4,9 +4,9 @@ class EarthIT_OIDAllocator_Registry
 {
 	protected $postResponseJobs = [];
 	
-	protected $configDir;
-	public function __construct( $configDir ) {
-		$this->configDir = $configDir;
+	protected $projectRootDir;
+	public function __construct( $projectRootDir ) {
+		$this->projectRootDir = $projectRootDir;
 	}
 	
 	protected $configCache = [];
@@ -16,7 +16,7 @@ class EarthIT_OIDAllocator_Registry
 		if( isset($this->configCache[$file]) ) {
 			$c = $this->configCache[$file];
 		} else {
-			$cf = "{$this->configDir}/{$file}.json";
+			$cf = "{$this->projectRootDir}/config/{$file}.json";
 			if( !file_exists($cf) ) return null;
 			$c = EarthIT_JSON::decode(file_get_contents($cf), true);
 			if( $c === null ) {
@@ -33,9 +33,13 @@ class EarthIT_OIDAllocator_Registry
 		}
 		return $c;
 	}
-		
+	
+	protected function loadOidAllocator() {
+		return new EarthIT_OIDAllocator_FSOIDAllocator($this->projectRootDir.'/data');
+	}
+	
 	protected function getViewTemplateDirectory() {
-		return EarthIT_OIDAllocator_ROOT_DIR.'/views';
+		return $this->projectRootDir.'/views';
 	}
 	
 	/**
