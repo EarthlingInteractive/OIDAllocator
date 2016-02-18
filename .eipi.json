@@ -1,5 +1,5 @@
 {
-   "project-name": "PHP Template Project",
+   "project-name": "OID Allocator",
    "project-type-name": "phrebar",
    "external-dependencies": {
       "postgres": "^9.3",

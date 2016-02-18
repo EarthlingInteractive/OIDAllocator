@@ -1,6 +1,6 @@
 <html>
 <head>
-<title><?php echo htmlspecialchars("{$title} - PHP Template Project"); ?></title>
+<title><?php echo htmlspecialchars("{$title} - OID Allocator"); ?></title>
 <!-- TODO: [Relative!] link to CSS instead of including inline -->
 <style>
 table.bolly {

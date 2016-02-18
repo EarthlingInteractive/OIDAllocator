@@ -1,2 +1,2 @@
-INSERT INTO "phptemplateprojectdatabasenamespace"."computationstatus" VALUES
+INSERT INTO "public"."computationstatus" VALUES
 ('queued'),('processing'), ('complete'), ('errored');

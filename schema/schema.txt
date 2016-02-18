@@ -42,14 +42,14 @@ class 'URI' : extends(string)
 class 'time' : extends(string) : SQL type @ "TIMESTAMP"
 class 'date' : extends(string) : SQL type @ "DATE"
 
-schema 'phptemplateprojectdatabasenamespace'
+schema 'public'
 
-sequence 'new entity ID' : initial value @ 1001 : is in namespace @ 'phptemplateprojectdatabasenamespace'
+sequence 'new entity ID' : initial value @ 1001 : is in namespace @ 'public'
 
 field modifier 'AIPK' = normal ID : is auto-incremented : key(primary)
 field modifier 'EIPK' = entity ID : default value sequence @ new entity ID : key(primary)
 # SRC = 'standard resource class'
-field modifier 'SRC' = has a database table : has a REST service : is in namespace @ 'phptemplateprojectdatabasenamespace'
+field modifier 'SRC' = has a database table : has a REST service : is in namespace @ 'public'
 
 class 'user' : SRC {
 	ID : EIPK

@@ -8,8 +8,8 @@ generated_resources := \
 	build/db/all-tables.sql \
 	build/db/create-database.sql \
 	build/db/drop-database.sql \
-	util/phptemplateprojectdatabase-psql \
-	util/phptemplateprojectdatabase-pg_dump \
+	util/oidallocator-psql \
+	util/oidallocator-pg_dump \
 	util/SchemaSchemaDemo.jar \
 	schema/schema.php \
 	vendor
@@ -71,10 +71,10 @@ ${config_files}: %: | %.example
 composer.lock: | composer.json
 	composer install
 
-util/phptemplateprojectdatabase-psql: config/dbc.json
+util/oidallocator-psql: config/dbc.json
 	vendor/bin/generate-psql-script -psql-exe psql "$<" >"$@"
 	chmod +x "$@"
-util/phptemplateprojectdatabase-pg_dump: config/dbc.json
+util/oidallocator-pg_dump: config/dbc.json
 	vendor/bin/generate-psql-script -psql-exe pg_dump "$<" >"$@"
 	chmod +x "$@"
 
@@ -102,11 +102,11 @@ build/db/drop-database.sql: config/dbc.json vendor
 create-database drop-database: %: build/db/%.sql
 	sudo -u postgres psql <"$<"
 
-empty-database: build/db/empty-database.sql util/phptemplateprojectdatabase-psql
-	cat "$<" | util/phptemplateprojectdatabase-psql
+empty-database: build/db/empty-database.sql util/oidallocator-psql
+	cat "$<" | util/oidallocator-psql
 
 upgrade-database: resources
-	vendor/bin/upgrade-database -upgrade-table 'phptemplateprojectdatabasenamespace.schemaupgrade'
+	vendor/bin/upgrade-database -upgrade-table 'public.schemaupgrade'
 
 rebuild-database: empty-database upgrade-database
 

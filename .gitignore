@@ -8,8 +8,8 @@ config/dbc.json
 config/email-transport.json
 datastore
 schema/schema.php
-util/phptemplateprojectdatabase-pg_dump
-util/phptemplateprojectdatabase-psql
+util/oidallocator-pg_dump
+util/oidallocator-psql
 util/SchemaSchemaDemo.jar
 vendor
 www/images/head.png

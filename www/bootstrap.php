@@ -13,7 +13,7 @@ ini_set('error_reporting', E_ALL|E_STRICT);
 require_once __DIR__.'/../init-error-handling.php';
 require_once __DIR__.'/../init-environment.php';
 
-$router = $PHPTemplateProjectNS_Registry->router;
+$router = $EarthIT_OIDAllocator_Registry->router;
 
 // Depending how this was invoked (mod_php, cgi, PHP's built-in
 // server, etc) PATH_INFO may be set in various ways.  This code
@@ -32,11 +32,11 @@ if( isset($_SERVER['PATH_INFO']) ) {
 	}
 }
 
-$request = PHPTemplateProjectNS_Request::fromEnvironment([
+$request = EarthIT_OIDAllocator_Request::fromEnvironment([
 	'pathInfo'=>$path,
 	'requestContentFuture'=>'eit_get_request_content'
 ]);
-$actx = new PHPTemplateProjectNS_NormalActionContext();
+$actx = new EarthIT_OIDAllocator_NormalActionContext();
 $actx = $actx->with(array('pathInfo'=>$path));
 $response = $router->handleRequest($request, $actx);
 
@@ -49,4 +49,4 @@ if( $bubble404s and $response->getStatusCode() == 404 ) return false;
 
 Nife_Util::outputResponse( $response );
 
-PHPTemplateProjectNS_PostResponseJobs::run();
+EarthIT_OIDAllocator_PostResponseJobs::run();

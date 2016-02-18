@@ -3,11 +3,11 @@
 // This file
 // - Initializes autoloaders
 // - Initializes some global functions
-// - Creates and returns a new PHPTemplateProjectNS_Registry
+// - Creates and returns a new EarthIT_OIDAllocator_Registry
 
 require __DIR__.'/vendor/autoload.php';
 
-define('PHPTemplateProjectNS_ROOT_DIR', __DIR__);
+define('EarthIT_OIDAllocator_ROOT_DIR', __DIR__);
 
 /** 'Emit HTML text' */
 function eht( $text ) {
@@ -102,5 +102,5 @@ spl_autoload_register('eit_autoload_converted');
 // Make a global variable for cases where
 // we don't control how the output of this script is used,
 // e.g. PHPUnit tests.
-$PHPTemplateProjectNS_Registry = new PHPTemplateProjectNS_Registry( __DIR__.'/config' );
-return $PHPTemplateProjectNS_Registry;
+$EarthIT_OIDAllocator_Registry = new EarthIT_OIDAllocator_Registry( __DIR__.'/config' );
+return $EarthIT_OIDAllocator_Registry;

@@ -1,15 +1,15 @@
-INSERT INTO "phptemplateprojectdatabasenamespace"."user"
+INSERT INTO "public"."user"
 ("username", "passhash", "emailaddress") VALUES
 ('Freddie Mercury', 'blah', 'freddie@mercury.net'),
 ('David Bowie', 'blah', 'david@bowie.net');
 
-INSERT INTO "phptemplateprojectdatabasenamespace"."organization"
+INSERT INTO "public"."organization"
 ("name") VALUES
 ('Queen'),
 ('The Konrads'),
 ('Riot Squad');
 
-INSERT INTO "phptemplateprojectdatabasenamespace"."userorganizationattachment"
+INSERT INTO "public"."userorganizationattachment"
 ("userid", "organizationid") VALUES
 (1001, 1003),
 (1002, 1004),
