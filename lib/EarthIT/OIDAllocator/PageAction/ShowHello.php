@@ -4,6 +4,13 @@ class EarthIT_OIDAllocator_PageAction_ShowHello extends EarthIT_OIDAllocator_Pag
 {
 	public function getTemplateName() { return 'hello'; }
 	public function getTemplateParameters() {
-		return [];
+		$spaces = $this->oidAllocator->findInfo(array());
+		foreach( $spaces as $k=>&$space ) {
+			$path = $k == '' ? array() : explode('.',$k);
+			$space['urlPath'] = $path == array() ? '' : implode('/',$path).'/';
+		} unset($space);
+		return [
+			'spaces' => $spaces
+		];
 	}
 }

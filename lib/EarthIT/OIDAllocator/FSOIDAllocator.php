@@ -120,6 +120,9 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		foreach( $path as &$seg ) {
 			if( !is_scalar($seg) ) throw new Exception("Non-scalar path segment: ".gettype($seg));
 			$seg = (string)$seg;
+			if( strlen($seg) == 0 ) {
+				throw new Exception("Path segment is empty string!");
+			}
 			if( !preg_match(self::VALID_NAME_REGEX,$seg) ) {
 				throw new Exception("Path segment contains invalid characters: $seg");
 			}

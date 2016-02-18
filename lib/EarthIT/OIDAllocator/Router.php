@@ -37,6 +37,13 @@ class EarthIT_OIDAllocator_Router extends EarthIT_OIDAllocator_Component
 				return $this->createPageAction('Register', $req->getParams());
 			}
 		} else if(
+			preg_match('#^/spaces/((?:[a-zA-Z0-9]+/)+)$#',$path,$bif) and
+			$req->requestMethod === 'GET'
+		) {
+			$spacePath = explode('/',$bif[1]);
+			array_pop($spacePath); // remove empty element after last '/'
+			return $this->createPageAction('ShowSpace', $spacePath);
+		} else if(
 			preg_match('#^/api([;/].*)#',$path,$bif) and
 			($apiAction = $this->apiRequestToAction(
 				$req->getRequestMethod(),
