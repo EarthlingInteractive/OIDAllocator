@@ -17,12 +17,12 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"EarthIT_OIDAllocator_": "test/"
+			"EarthIT_OIDAllocator": "test/"
 		}
 	},
 	"autoload-dev": {
 		"psr-0": {
-			"EarthIT_OIDAllocator_": "lib/"
+			"EarthIT_OIDAllocator": "lib/"
 		}
 	}
 }

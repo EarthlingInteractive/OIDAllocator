@@ -60,15 +60,6 @@ class EarthIT_OIDAllocator_Registry
 		}
 	}
 	
-	/*
-	 * List names of any component classes that where the casing of their ClassName
-	 * differes from that of their attributeName by more than the first letter.
-	 * e.g. classes whose names contain acronyms.
-	 *
-	 * If you've defined a loadXyz function, then this is unnecessary.
-	 */
-	protected static $funnilyCasedComponentNames = ['ABC decoder', 'REST action authorizer'];
-	
 	public function __get($attrName) {
 		// If something's been explicitly overridden, return that.
 		if( isset($this->components[$attrName]) ) {
@@ -91,15 +82,6 @@ class EarthIT_OIDAllocator_Registry
 		$creatorMethodName = "load{$ucfAttrName}";
 		if( method_exists($this, $creatorMethodName) ) { 
 			return $this->cachedComponents[$attrName] = $this->$creatorMethodName();
-		}
-		
-		foreach( self::$funnilyCasedComponentNames as $n) {
-			$n = trim($n);
-			if( EarthIT_Schema_WordUtil::toCamelCase($n) == $attrName ) {
-				// Ooh, this is what they want!
-				$ucfAttrName = EarthIT_Schema_WordUtil::toPascalCase($n);
-				break;
-			}
 		}
 		
 		// If there's a class with a matching name, instantiate it and cache the instance.

@@ -8,6 +8,7 @@ config/dbc.json
 config/email-transport.json
 datastore
 schema/schema.php
+temp
 util/oidallocator-pg_dump
 util/oidallocator-psql
 util/SchemaSchemaDemo.jar
