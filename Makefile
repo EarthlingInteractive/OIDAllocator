@@ -1,32 +1,17 @@
 config_files := \
 	config/ccouch-repos.lst \
-	config/dbc.json \
 	config/email-transport.json
 
 generated_resources := \
-	.git-object-urns.txt \
-	build/db/all-tables.sql \
-	build/db/create-database.sql \
-	build/db/drop-database.sql \
-	util/oidallocator-psql \
-	util/oidallocator-pg_dump \
-	util/SchemaSchemaDemo.jar \
-	schema/schema.php \
 	vendor
 
 build_resources := ${generated_resources} ${config_files}
 
 runtime_resources := \
-	config/dbc.json \
 	config/email-transport.json \
-	schema/schema.php \
 	vendor
 
 resources := ${build_resources} ${runtime_resources}
-
-schemaschemademo := java -jar util/SchemaSchemaDemo.jar schema/schema.txt
-
-fetch := vendor/bin/fetch -repo @config/ccouch-repos.lst
 
 default: runtime-resources run-tests
 
@@ -34,19 +19,14 @@ default: runtime-resources run-tests
 
 .PHONY: \
 	build-resources \
-	create-database \
 	default \
-	drop-database \
 	everything \
-	empty-database \
-	rebuild-database \
 	redeploy \
 	resources \
 	runtime-resources \
 	run-tests \
 	run-unit-tests \
 	run-web-server \
-	upgrade-database \
 	clean \
 	everything
 
@@ -71,46 +51,7 @@ ${config_files}: %: | %.example
 composer.lock: | composer.json
 	composer install
 
-util/oidallocator-psql: config/dbc.json
-	vendor/bin/generate-psql-script -psql-exe psql "$<" >"$@"
-	chmod +x "$@"
-util/oidallocator-pg_dump: config/dbc.json
-	vendor/bin/generate-psql-script -psql-exe pg_dump "$<" >"$@"
-	chmod +x "$@"
-
-util/SchemaSchemaDemo.jar: \
-%: %.urn | vendor config/ccouch-repos.lst
-	${fetch} -o "$@" `cat "$<"`
-
-build/db/all-tables.sql: schema/schema.txt util/SchemaSchemaDemo.jar
-	${schemaschemademo} -o-create-tables-script "$@"
-
-schema/schema.php: schema/schema.txt util/SchemaSchemaDemo.jar
-	${schemaschemademo} -o-schema-php "$@" -php-schema-class-namespace EarthIT_Schema
-
-.git-object-urns.txt: .git/HEAD
-	vendor/earthit/php-project-utils/bin/generate-git-urn-map >"$@"
-
-build/db/create-database.sql: config/dbc.json vendor
-	vendor/bin/generate-create-database-sql "$<" >"$@"
-build/db/drop-database.sql: config/dbc.json vendor
-	vendor/bin/generate-drop-database-sql "$<" >"$@"
-
-#www/images/head.png:
-#	${fetch} -o "$@" "urn:bitprint:HYWPXT25DHVRV4BXETMRZQY26E6AQCYW.33QDQ443KBXZB5F5UGYODRN2Y34DOZ4GILDI7ZA"
-
-create-database drop-database: %: build/db/%.sql
-	sudo -u postgres psql <"$<"
-
-empty-database: build/db/empty-database.sql util/oidallocator-psql
-	cat "$<" | util/oidallocator-psql
-
-upgrade-database: resources
-	vendor/bin/upgrade-database -upgrade-table 'public.schemaupgrade'
-
-rebuild-database: empty-database upgrade-database
-
-run-unit-tests: runtime-resources upgrade-database
+run-unit-tests: runtime-resources
 	vendor/bin/phpunit --bootstrap init-environment.php test
 
 run-tests: run-unit-tests
@@ -118,12 +59,8 @@ run-tests: run-unit-tests
 run-web-server:
 	cd www && php -S localhost:6061 bootstrap.php
 
-redeploy: runtime-resources upgrade-database
+redeploy: runtime-resources
 
 everything: \
-	config/dbc.json \
-	drop-database \
-	create-database \
-	upgrade-database \
 	run-tests \
 	run-web-server

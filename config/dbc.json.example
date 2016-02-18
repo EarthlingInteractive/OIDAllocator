@@ -1,8 +1,0 @@
-{
-    "dbname": "oidallocator",
-    "host": "localhost",
-    "user": "oidallocator",
-    "password": "oidallocator",
-    "driver": "pdo_pgsql",
-    "charset": "UTF-8"
-}
