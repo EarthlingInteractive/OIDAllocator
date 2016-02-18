@@ -102,5 +102,5 @@ spl_autoload_register('eit_autoload_converted');
 // Make a global variable for cases where
 // we don't control how the output of this script is used,
 // e.g. PHPUnit tests.
-$EarthIT_OIDAllocator_Registry = new EarthIT_OIDAllocator_Registry( __DIR__.'/config' );
+$EarthIT_OIDAllocator_Registry = new EarthIT_OIDAllocator_Registry( EarthIT_OIDAllocator_ROOT_DIR );
 return $EarthIT_OIDAllocator_Registry;

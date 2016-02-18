@@ -4,9 +4,17 @@ class EarthIT_OIDAllocator_Registry
 {
 	protected $postResponseJobs = [];
 	
-	protected $configDir;
-	public function __construct( $configDir ) {
-		$this->configDir = $configDir;
+	protected $projectRootDir;
+	public function __construct( $projectRootDir ) {
+		$this->projectRootDir = $projectRootDir;
+	}
+	
+	protected function loadConfigFile($file) {
+		$c = EarthIT_JSON::decode(file_get_contents($file), true);
+		if( $c === null ) {
+			throw new Exception("Failed to load config from '{$file}'");
+		}
+		return $c;
 	}
 	
 	protected $configCache = [];
@@ -16,12 +24,9 @@ class EarthIT_OIDAllocator_Registry
 		if( isset($this->configCache[$file]) ) {
 			$c = $this->configCache[$file];
 		} else {
-			$cf = "{$this->configDir}/{$file}.json";
+			$cf = "{$this->projectRootDir}/config/{$file}.json";
 			if( !file_exists($cf) ) return null;
-			$c = EarthIT_JSON::decode(file_get_contents($cf), true);
-			if( $c === null ) {
-				throw new Exception("Failed to load config from '{$cf}'");
-			}
+			$c = $this->loadConfigFile($cf);
 			$this->configCache[$file] = $c;
 		}
 		foreach( $parts as $p ) {
@@ -34,6 +39,27 @@ class EarthIT_OIDAllocator_Registry
 		return $c;
 	}
 	
+	public function requireConfig( $name ) {
+		$v = $this->getConfig($name);
+		if( $v === null ) throw new Exception("'$name' config variable not defined.");
+		return $v;
+	}
+	
+	/** Don't use this unless you're withConfig */
+	public function setConfig( $name, $v ) {
+		// Force it to get loaded:
+		$this->getConfig($name);
+		
+		$parts = explode('/', $name);
+		$lsat = array_pop($parts);
+		$c =& $this->configCache;
+		foreach( $parts as $p ) {
+			$c =& $c[$p];
+		}
+		$c[$lsat] = $v;
+	}
+
+	
 	public function loadDbAdapter() {
 		return Doctrine_DBAL_DriverManager::getConnection( $this->getConfig('dbc') );
 	}
@@ -41,9 +67,22 @@ class EarthIT_OIDAllocator_Registry
 	public function loadDbObjectNamer() {
 		return new EarthIT_DBC_OverridableNamer(new EarthIT_DBC_PostgresNamer());
 	}
-		
+	
+	public function getRestNameFormatter() {
+		return function($name, $plural=false) {
+			if($plural) $name = EarthIT_Schema_WordUtil::pluralize($name);
+			return EarthIT_Schema_WordUtil::toCamelCase($name);
+		};
+	}
+	
+	public function getRestSchemaObjectNamer() {
+		return function($obj, $plural=false) {
+			return call_user_func($this->restNameFormatter, $obj->getName(), $plural);
+		};
+	}
+	
 	public function loadSchema($name='') {
-		return require EarthIT_OIDAllocator_ROOT_DIR.'/schema/'.($name?$name.'.':'').'schema.php';
+		return require $this->projectRootDir.'/schema/'.($name?$name.'.':'').'schema.php';
 	}
 
 	public function loadSqlRunner() {
@@ -105,13 +144,13 @@ class EarthIT_OIDAllocator_Registry
 	}
 	
 	protected function getBlobRepositoryDirs() {
-		$repoListFile = "{$this->configDir}/local-ccouch-repos.lst";
+		$repoListFile = "{$this->projectRootDir}/config/local-ccouch-repos.lst";
 		if( file_exists($repoListFile) ) {
 			$repos = $this->readLstFile($repoListFile);
 		} else {
 			$repos = [];
 		}
-		array_unshift($repos, EarthIT_OIDAllocator_ROOT_DIR.'/datastore');
+		array_unshift($repos, "{$this->projectRootDir}/datastore");
 		return $repos;
 	}
 	
@@ -120,12 +159,12 @@ class EarthIT_OIDAllocator_Registry
 		foreach( $this->getBlobRepositoryDirs() as $rd ) {
 			$repos[] = new TOGoS_PHPN2R_FSSHA1Repository($rd);
 		}
-		$gitDir = EarthIT_OIDAllocator_ROOT_DIR.'/.git';
+		$gitDir = "{$this->projectRootDir}/.git";
 		if( is_dir($gitDir) ) {
 			$repos[] = new TOGoS_PHPN2R_GitRepository($gitDir);
 		}
 		$multiRepo = new TOGoS_PHPN2R_MultiRepository($repos);
-		$mappingFile = EarthIT_OIDAllocator_ROOT_DIR.'/.git-object-urns.txt';
+		$mappingFile = "{$this->projectRootDir}/.git-object-urns.txt";
 		if( file_exists($mappingFile) ) {
 			$multiRepo = new TOGoS_PHPN2R_URIMappingRepository($multiRepo, array(), array($mappingFile));
 		}
@@ -144,7 +183,7 @@ class EarthIT_OIDAllocator_Registry
 	}
 	
 	protected function getViewTemplateDirectory() {
-		return EarthIT_OIDAllocator_ROOT_DIR.'/views';
+		return "{$this->projectRootDir}/views";
 	}
 	
 	/**
@@ -255,6 +294,16 @@ class EarthIT_OIDAllocator_Registry
 		$alt = $this->cleanClone();
 		foreach( $stuff as $k=>$v ) $alt->$k = $v;
 		return $alt;
+	}
+	
+	public function withConfig($k, $v) {
+		$alt = $this->cleanClone();
+		$alt->setConfig($k, $v);
+		return $alt;
+	}
+	
+	public function withConfigFile($k, $filename) {
+		return $this->withConfig($k, $this->loadConfigFile($filename));
 	}
 	
 	public function withSchema(EarthIT_Schema $schema) {
