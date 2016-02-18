@@ -2,6 +2,7 @@
 	"projectName": "OID Allocator",
 	"phpNamespace": "EarthIT_OIDAllocator",
 	"nodePackageNamePrefix": "oid-allocator",
+	"deploymentHostname": "oidallocator.localhost",
 	"deploymentUrlPrefix": "http:\/\/oidallocator.localhost\/",
 	"databaseName": "oidallocator",
 	"databaseHost": "localhost",

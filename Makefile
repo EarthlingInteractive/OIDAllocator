@@ -19,16 +19,16 @@ default: runtime-resources run-tests
 
 .PHONY: \
 	build-resources \
+	clean \
 	default \
 	everything \
+	realclean \
 	redeploy \
 	resources \
 	runtime-resources \
 	run-tests \
 	run-unit-tests \
 	run-web-server \
-	clean \
-	everything
 
 build-resources: ${build_resources}
 runtime-resources: ${runtime_resources}
@@ -36,6 +36,8 @@ resources: ${resources}
 
 clean:
 	rm -rf ${generated_resources}
+realclean:
+	rm -rf ${generated_resources} ${config_files}
 
 vendor: composer.lock
 	composer install
