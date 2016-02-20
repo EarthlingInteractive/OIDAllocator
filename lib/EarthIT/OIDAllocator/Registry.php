@@ -46,7 +46,7 @@ class EarthIT_OIDAllocator_Registry
 	}
 	
 	protected function loadOidAllocator() {
-		return new EarthIT_OIDAllocator_FSOIDAllocator($this->projectRootDir.'/data');
+		return new EarthIT_OIDAllocator_FSOIDAllocator($this->projectRootDir.'/spaces');
 	}
 	
 	/** Don't use this unless you're withConfig */

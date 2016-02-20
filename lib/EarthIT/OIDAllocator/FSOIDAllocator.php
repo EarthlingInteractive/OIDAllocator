@@ -52,6 +52,8 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 	protected function lockCounterFile( array $path, $lockType ) {
 		$rf = $this->counterFile($path);
 		if( !file_exists($rf) ) {
+			if( $lockType === LOCK_SH ) return null;
+			
 			$dir = dirname($rf);
 			if( !is_dir($dir) ) {
 				mkdir($dir, 0755, true);
@@ -107,6 +109,18 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		return $ids;
 	}
 	
+	protected function getCounters( array $path ) {
+		$ch = $this->lockCounterFile($path, LOCK_SH);
+		if( $ch === null ) return array();
+		try {
+			$counterFileContent = stream_get_contents($ch);
+			if( $counterFileContent === '' ) $counterFileContent = '{}';
+			return EarthIT_JSON::decode($counterFileContent);
+		} finally {
+			fclose($ch);
+		}
+	}
+	
 	public function allocate( array $namespacePath, $count, array $options=array() ) {
 		$info = $this->getInfo($namespacePath);
 		$defaultRegion = isset($info['defaultRegionCode']) ? $info['defaultRegionCode'] : OIDA::REGION_PROD;
@@ -130,10 +144,14 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		return $path;
 	}
 	
-	public function getInfo( array $path ) {
-		$c = @file_get_contents($this->infoFile($path));
-		if( $c === false ) return null;
-		return EarthIT_JSON::decode($c);
+	public function getInfo( array $path, array $options=array() ) {
+		$i = @file_get_contents($this->infoFile($path));
+		if( $i === false ) return null;
+		$info = EarthIT_JSON::decode($i);
+		if( !empty($options[self::INCLUDE_COUNTERS]) ) {
+			$info = array('counters'=>$this->getCounters($path)) + $info;
+		}
+		return $info;
 	}
 	
 	public function setInfo( array $path, array $info ) {
@@ -153,7 +171,16 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 	
 	public function findInfo( array $path, array $options=array(), array &$thingsGoHere=array() ) {
 		$pathString = self::pathToString($path,'');
-		if( ($info = $this->getInfo($path)) !== null ) $thingsGoHere[$pathString] = $info;
+		$includeRoot = !isset($options[self::INCLUDE_ROOT]) || $options[self::INCLUDE_ROOT];
+		if( $includeRoot and ($info = $this->getInfo($path)) !== null ) {
+			$thingsGoHere[$pathString] = $info;
+			if( isset($options[self::RECURSE_PAST_INFO]) && $options[self::RECURSE_PAST_INFO] === false ) {
+				return;
+			}
+		}
+		
+		$options[self::INCLUDE_ROOT] = true;
+		
 		$dir = $this->spaceDir($path);
 		if( is_dir($dir) ) {
 			$files = scandir($dir);
