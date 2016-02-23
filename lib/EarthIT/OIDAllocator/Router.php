@@ -18,7 +18,7 @@ class EarthIT_OIDAllocator_Router extends EarthIT_OIDAllocator_Component
 	public function requestToAction( EarthIT_OIDAllocator_Request $req ) {
 		$path = $req->getPathInfo();
 		if( $path == '/' ) {
-			return $this->createPageAction('ShowHello');
+			return $this->createPageAction('ShowSpace', array(), array('title'=>"Welcome to OID Allocator!"));
 		} else if( $path == '/login' ) {
 			switch( $req->requestMethod ) {
 			case 'GET' : return $this->createPageAction('ShowLoginForm', $req->getParam('error-message-id'));
@@ -37,12 +37,18 @@ class EarthIT_OIDAllocator_Router extends EarthIT_OIDAllocator_Component
 				return $this->createPageAction('Register', $req->getParams());
 			}
 		} else if(
-			preg_match('#^/spaces/((?:[a-zA-Z0-9]+/)+)$#',$path,$bif) and
-			$req->requestMethod === 'GET'
+			preg_match('#^/spaces/((?:[a-zA-Z0-9]+/)+)$#',$path,$bif)
 		) {
 			$spacePath = explode('/',$bif[1]);
 			array_pop($spacePath); // remove empty element after last '/'
-			return $this->createPageAction('ShowSpace', $spacePath);
+			switch( $req->requestMethod ) {
+			case 'GET':
+				$options = array();
+				if( ($newIdsStr = $req->getParam('newItemIds')) ) $options['newItemIds'] = explode(',',$newIdsStr);
+				return $this->createPageAction('ShowSpace', $spacePath, $options);
+			case 'POST':
+				return $this->createPageAction('AllocateIDs', $spacePath, $req->getParams());
+			}
 		} else if(
 			preg_match('#^/api([;/].*)#',$path,$bif) and
 			($apiAction = $this->apiRequestToAction(

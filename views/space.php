@@ -1,12 +1,21 @@
 <?php $PU->emitHtmlBoilerplate("Welcome!", $params); ?>
 
-<h2><?php eht($space['name']); ?></h2>
+<?php if($pageTitle): ?><h2><?php eht($pageTitle); ?></h2><?php endif; ?>
 
 <ul>
-<?php foreach($subSpaces as $spacePath=>$space): ?>
-<li><?php echo $PU->linkHtml("/spaces/{$space['urlPath']}", $space['name']); ?></li>
+<?php foreach($subSpaces as $subSpace): ?>
+<li><?php echo $PU->linkHtml("/spaces/{$subSpace['urlPath']}", $subSpace['name']); ?></li>
 <?php endforeach; ?>
 </ul>
+
+<?php if(!empty($newItemIds)): ?>
+<h3>Congratulations on your new item IDs!</h3>
+<ul>
+<?php foreach($newItemIds as $id): ?>
+<li><?php echo $PU->linkHtml("$id/", $id); ?></li>
+<?php endforeach; ?>
+</ul>
+<?php endif; ?>
 
 <?php if(!empty($space['regions'])): ?>
 <h3>Regions</h3>
@@ -29,7 +38,7 @@ $highestId = isset($space['counters'][$regionKey]) ?
 <td align="right"><?php eht($region['bottom']); ?></td>
 <td align="right"><?php eht($region['top']); ?></td>
 <td align="right"><?php eht($highestId); ?></td>
-<td><input type="text" size="2" value="0"/></td>
+<td><input type="text" name="regions[<?php eht($regionKey); ?>][allocationRequest]" size="2" value="0"/></td>
 </tr>
 <?php endforeach; ?>
 </tbody>

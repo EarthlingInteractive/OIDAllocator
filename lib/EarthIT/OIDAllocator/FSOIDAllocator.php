@@ -59,7 +59,8 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 				mkdir($dir, 0755, true);
 			}
 		}
-		$rh = fopen( $rf, 'r+' );
+		$mode = file_exists($rf) ? 'r+' : 'w+'; // And hope nobody's racing us
+		$rh = fopen( $rf, $mode );
 		flock($rh, $lockType);
 		return $rh;
 	}
@@ -72,7 +73,7 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		if( $count == 0 ) return array(); // Nothing to it!
 		
 		if( !isset($spaceInfo['regions'][$regionCode]) ) {
-			throw new AException("No such region '$regionCode' in ".self::pathToString($namespacePath));
+			throw new AllocException("No such region '$regionCode' in ".self::pathToString($namespacePath));
 		}
 		$regionInfo = $spaceInfo['regions'][$regionCode];
 		foreach( array('bottom','top') as $requiredKey ) {

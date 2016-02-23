@@ -22,6 +22,7 @@ default: runtime-resources run-tests
 	clean \
 	default \
 	everything \
+	fix-data-permissions \
 	realclean \
 	redeploy \
 	resources \
@@ -61,7 +62,10 @@ run-tests: run-unit-tests
 run-web-server:
 	cd www && php -S localhost:6061 bootstrap.php
 
-redeploy: runtime-resources
+fix-data-permissions:
+	chmod -R ugo+rwX spaces
+
+redeploy: runtime-resources fix-data-permissions
 
 everything: \
 	run-tests \
