@@ -63,6 +63,7 @@ run-web-server:
 	cd www && php -S localhost:6061 bootstrap.php
 
 fix-data-permissions:
+	sudo chown -R `whoami` spaces
 	chmod -R ugo+rwX spaces
 
 redeploy: runtime-resources fix-data-permissions
