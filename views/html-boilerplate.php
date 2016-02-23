@@ -3,6 +3,10 @@
 <title><?php echo htmlspecialchars("{$title} - OID Allocator"); ?></title>
 <!-- TODO: [Relative!] link to CSS instead of including inline -->
 <style>
+span.oid-crumbs {
+	margin: 4px 8px;
+	padding: 4px 8px;
+}
 table.bolly {
 	border-collapse: collapse;
 }
