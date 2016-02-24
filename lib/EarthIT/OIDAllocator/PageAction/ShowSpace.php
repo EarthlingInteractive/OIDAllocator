@@ -26,7 +26,7 @@ class EarthIT_OIDAllocator_PageAction_ShowSpace extends EarthIT_OIDAllocator_Pag
 		));
 		foreach( $subSpaces as $k=>&$subSpace ) {
 			$path = $k == '' ? array() : explode('.',$k);
-			$subSpace['urlPath'] = $this->urlPath($path);
+			$subSpace['urlPath'] = $this->util->urlPath($path);
 		} unset($subSpace);
 		
 		if( isset($this->options['title']) ) $title = $this->options['title'];
