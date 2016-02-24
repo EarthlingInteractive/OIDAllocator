@@ -10,21 +10,9 @@ class EarthIT_OIDAllocator_PageAction_ShowSpace extends EarthIT_OIDAllocator_Pag
 		$this->options = $options;
 	}
 	
-	protected function urlPath(array $path) {
-		return $path == array() ? '' : implode('/',$path).'/';
-	}
-	
 	public function getTemplateName() { return 'space'; }
 	public function getTemplateParameters() {
-		$crumz = array();
-		for( $i=0; $i<count($this->path); ++$i ) {
-			$crumPath = array_slice($this->path, 0, $i+1);
-			$crumInfo = $this->oidAllocator->getInfo($crumPath);
-			if( $crumInfo === null ) $crumInfo = array('isEmpty'=>true);
-			$crumInfo['num'] = $this->path[$i];
-			$crumInfo['urlPath'] = $this->urlPath($crumPath);
-			$crumz[] = $crumInfo;
-		}
+		$crumz = $this->util->getCrumz($this->path);
 		
 		$space = $this->oidAllocator->getInfo($this->path, array(
 			EarthIT_OIDAllocator::INCLUDE_COUNTERS => true,

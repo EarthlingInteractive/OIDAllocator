@@ -44,7 +44,11 @@ class EarthIT_OIDAllocator_Router extends EarthIT_OIDAllocator_Component
 			switch( $req->requestMethod ) {
 			case 'GET':
 				$options = array();
-				if( ($newIdsStr = $req->getParam('newItemIds')) ) $options['newItemIds'] = explode(',',$newIdsStr);
+				$newItemIds = ($newIdsStr = $req->getParam('newItemIds')) ? explode(',',$newIdsStr) : array();
+				if( $newItemIds ) {
+					return $this->createPageAction('ShowNewItems', $spacePath, $newItemIds);
+				}
+				$options['newItemIds'] = $newItemIds;
 				return $this->createPageAction('ShowSpace', $spacePath, $options);
 			case 'POST':
 				return $this->createPageAction('AllocateIDs', $spacePath, $req->getParams());
