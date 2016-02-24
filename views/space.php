@@ -1,5 +1,21 @@
 <?php $PU->emitHtmlBoilerplate("Welcome!", $params); ?>
 
+<style>/*<![CDATA[*/
+.fake-button, input[type=submit] {
+	background: silver;
+	border: 2px silver outset;
+	outline: 1px solid gray;
+	cursor: pointer;
+	font-size: 10pt;
+	font-family: Sans;
+	padding: 0px 4px;
+}
+.fake-button:active, input:active[type=submit] {
+	background: silver;
+	border: 2px silver inset;
+}
+/*]]>*/</style>
+
 <?php
 	$numParts = array();
 	$nameParts = array();
@@ -73,18 +89,26 @@ $allocatable = !empty($region['allocatable']);
 <td align="right"><?php eht($region['top']); ?></td>
 <td align="right"><?php eht($highestId); ?></td>
 <?php if($allocatable): ?>
-<td><input type="text"
+<td align="right"><input type="text"
   id="region-<?php eht($regionKey); ?>-allocation-request-box"
   name="regions[<?php eht($regionKey); ?>][allocationRequest]" size="2" value="0"/></td>
-<td><button onclick="submitRequestForNewId(<?php eht(json_encode($regionKey)); ?>); return false;">Next!</button></td>
+<td><a class="fake-button" onclick="submitRequestForNewId(<?php eht(json_encode($regionKey)); ?>); return false;">Next!</a></td>
 <?php else: ?>
 <?php endif; ?>
 </tr>
 <?php endforeach; ?>
 </tbody>
+<tfoot>
+<tr>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td></td>
+  <td><input type="submit" value="Allocate"/></td>
+</tr>
+</tfoot>
 </table>
 
-<input type="submit" value="Allocate"/>
 </form>
 <?php endif; ?>
 
