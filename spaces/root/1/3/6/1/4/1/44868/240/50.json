@@ -1,0 +1,10 @@
+{
+	"name": "BetterMD upgrade scripts",
+	"regions": {
+		"default": {
+			"allocatable": true,
+			"bottom": "1000",
+			"top":   "10000"
+		}
+	}
+}
