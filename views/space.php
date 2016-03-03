@@ -38,6 +38,10 @@
 <?php if(!empty($space['regions'])): ?>
 <h3>Regions</h3>
 
+<p>Click 'Next!' to get a single ID from a region.</p>
+
+<p>If you need a bunch, fill in the number you need and click 'Allocate'.</p>
+
 <script type="text/javascript">//<![CDATA[
 	function submitRequestForNewId(regionKey) {
 		document.getElementById("region-"+regionKey+"-allocation-request-box").value = 1;
@@ -48,7 +52,7 @@
 <form method="POST" id="allocation-form">
 <table>
 <thead>
-<tr><th>Name</th><th>Bottom</th><th>Top</th><th>Highest used ID</th></tr>
+<tr><th>Name</th><th>Bottom</th><th>Top</th><th>Highest used ID</th><th colspan="2">Allocate</th></tr>
 </thead>
 <tbody>
 <?php foreach($space['regions'] as $regionKey=>$region): ?>
@@ -68,7 +72,10 @@ $allocatable = !empty($region['allocatable']);
 <td align="right"><input type="text"
   id="region-<?php eht($regionKey); ?>-allocation-request-box"
   name="regions[<?php eht($regionKey); ?>][allocationRequest]" size="2" value="0"/></td>
-<td><a class="fake-button" onclick="submitRequestForNewId(<?php eht(json_encode($regionKey)); ?>); return false;">Next!</a></td>
+<td><a class="fake-button"
+       title="Allocate a single ID from this region"
+       onclick="submitRequestForNewId(<?php eht(json_encode($regionKey)); ?>); return false;"
+     >Next!</a></td>
 <?php else: ?>
 <?php endif; ?>
 </tr>
@@ -80,7 +87,7 @@ $allocatable = !empty($region['allocatable']);
   <td></td>
   <td></td>
   <td></td>
-  <td><input type="submit" value="Allocate"/></td>
+  <td colspan="2"><input type="submit" value="Allocate" style="width:100%"/></td>
 </tr>
 </tfoot>
 </table>
