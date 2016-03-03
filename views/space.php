@@ -20,6 +20,8 @@
 
 <?php if($pageTitle): ?><h2><?php eht($pageTitle); ?></h2><?php endif; ?>
 
+<?php if( isset($space['description']) ) echo "<p>", htmlspecialchars($space['description']), "</p>\n"; ?>
+
 <ul>
 <?php foreach($subSpaces as $subSpace): ?>
 <li><?php echo $PU->linkHtml("/spaces/{$subSpace['urlPath']}", $subSpace['name']); ?></li>
