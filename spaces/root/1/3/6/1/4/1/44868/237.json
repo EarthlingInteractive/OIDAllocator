@@ -1,0 +1,22 @@
+{
+	"name": "Whole Trees Web",
+	"regions": {
+		"special": {
+			"bottom":           "0",
+			"top":           "1000"
+		},
+		"manually-allocated": {
+			"allocatable":     false,
+			"bottom":        "1100",
+			"top":    "10000000000"
+		},
+		"local": {
+			"bottom": "10000000000",
+			"top":    "20000000000"
+		},
+		"production": {
+			"bottom": "20000000000",
+			"top":    "30000000000"
+		}
+	}
+}

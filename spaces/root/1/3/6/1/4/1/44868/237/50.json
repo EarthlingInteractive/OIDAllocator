@@ -1,0 +1,10 @@
+{
+   "name": "Whole Trees Web upgrade scripts",
+	"regions": {
+		"wholetreesweb": {
+			"allocatable": true,
+			"bottom": "1000",
+			"top":    "2000"
+		}
+	}
+}
