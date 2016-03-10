@@ -18,6 +18,11 @@ class EarthIT_OIDAllocator_PageAction_ShowSpace extends EarthIT_OIDAllocator_Pag
 			EarthIT_OIDAllocator::INCLUDE_COUNTERS => true,
 		));
 		
+		$anyRegionsAllocatable = false;
+		if( isset($space['regions']) ) foreach( $space['regions'] as $reg ) {
+			if( !empty($reg['allocatable']) ) $anyRegionsAllocatable = true;
+		}
+		
 		$newItemIds = isset($this->options['newItemIds']) ? $this->options['newItemIds'] : array();
 		
 		$subSpaces = $this->oidAllocator->findInfo($this->path, array(
@@ -32,11 +37,12 @@ class EarthIT_OIDAllocator_PageAction_ShowSpace extends EarthIT_OIDAllocator_Pag
 		if( isset($this->options['title']) ) $title = $this->options['title'];
 		else if( $space ) $title = $space['name'];
 		else $title = '';
-
+		
 		return [
 			'pageTitle' => $title,
 			'crumz' => $crumz,
 			'space' => $space,
+			'anyRegionsAllocatable' => $anyRegionsAllocatable,
 			'subSpaces' => $subSpaces,
 			'newItemIds' => $newItemIds,
 		];

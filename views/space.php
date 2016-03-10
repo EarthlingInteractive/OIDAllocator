@@ -40,9 +40,11 @@
 <?php if(!empty($space['regions'])): ?>
 <h3>Regions</h3>
 
+<?php if($anyRegionsAllocatable): ?>
 <p>Click 'Next!' to get a single ID from a region.</p>
 
 <p>If you need a bunch, fill in the number you need and click 'Allocate'.</p>
+<?php endif; ?>
 
 <script type="text/javascript">//<![CDATA[
 	function submitRequestForNewId(regionKey) {
@@ -54,7 +56,8 @@
 <form method="POST" id="allocation-form">
 <table>
 <thead>
-<tr><th>Name</th><th>Bottom</th><th>Top</th><th>Highest used ID</th><th colspan="2">Allocate</th></tr>
+<tr><th>Name</th><th>Bottom</th><th>Top</th><th>Highest used ID</th>
+  <?php if($anyRegionsAllocatable) { ?><th colspan="2">Allocate</th><?php } ?></tr>
 </thead>
 <tbody>
 <?php foreach($space['regions'] as $regionKey=>$region): ?>
@@ -84,6 +87,7 @@ $allocatable = !empty($region['allocatable']);
 <?php endforeach; ?>
 </tbody>
 <tfoot>
+<?php if($anyRegionsAllocatable): ?>
 <tr>
   <td></td>
   <td></td>
@@ -91,6 +95,7 @@ $allocatable = !empty($region['allocatable']);
   <td></td>
   <td colspan="2"><input type="submit" value="Allocate" style="width:100%"/></td>
 </tr>
+<?php endif; ?>
 </tfoot>
 </table>
 
