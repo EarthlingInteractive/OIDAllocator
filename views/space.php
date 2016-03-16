@@ -88,6 +88,12 @@ $allocatable = !empty($region['allocatable']);
 </tbody>
 <tfoot>
 <?php if($anyRegionsAllocatable): ?>
+<tr><th colspan="6">
+  <p>Optional: add a short note about this allocation:</p>
+</th></tr>
+<tr><td colspan="6">
+    <textarea style="width:100%" name="notes" placeholder="Identify ALL THE THINGS! &nbsp; -- Steve"></textarea>
+</td></tr>
 <tr>
   <td></td>
   <td></td>
