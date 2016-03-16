@@ -11,6 +11,10 @@ interface EarthIT_OIDAllocator
 	const REGION_TEMP = 'temporary';
 	
 	const INCLUDE_COUNTERS = 'include-counters';
+	// These are also used as keys in allocation info, which is stored,
+	// which is why they are camelCase:
+	const NOTES = 'notes';
+	const ALLOCATING_USER_ID = 'allocatingUserId';
 	
 	public function allocate( array $namespacePath, $count, array $options=array() );
 	public function getInfo( array $path, array $options=array() );

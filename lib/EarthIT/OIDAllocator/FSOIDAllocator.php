@@ -19,6 +19,19 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		$this->updateListeners[] = $func;
 	}
 	
+	protected static function writeFile($file, $content) {
+		$dir = dirname($file);
+		if( !empty($dir) and !is_dir($dir) ) {
+			if( @mkdir($dir, 0755, true) === false ) {
+				throw new Exception("Failed to create directory $dir: {$err['message']}");
+			}
+		}
+		if( @file_put_contents($file, $content) === false ) {
+			$err = error_get_last();
+			throw new Exception("Failed to write to $file: {$err['message']}");
+		}
+	}
+	
 	protected static function pathToString(array $path, $rootName='root') {
 		return count($path) == 0 ? $rootName : implode('.',$path);
 	}
@@ -49,6 +62,10 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		return $this->infoFile($path, '.counters.json');
 	}
 	
+	protected function allocationFile( array $path, $first, $last ) {
+		return $this->infoFile($path, ".allocations/{$first}-{$last}.json");
+	}
+	
 	protected function lockCounterFile( array $path, $lockType ) {
 		$rf = $this->counterFile($path);
 		if( !file_exists($rf) ) {
@@ -69,7 +86,7 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		foreach( $this->updateListeners as $l ) call_user_func($l, array('message'=>$message));
 	}
 	
-	protected function allocateFromRegion( array $namespacePath, array $spaceInfo, $regionCode, $count ) {
+	protected function allocateFromRegion( array $namespacePath, array $spaceInfo, $regionCode, $count, array $options ) {
 		if( $count == 0 ) return array(); // Nothing to it!
 		
 		if( !isset($spaceInfo['regions'][$regionCode]) ) {
@@ -102,11 +119,22 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		} finally {
 			fclose($ch);
 		}
-			
-		$ids = array();
-		for( $i=0, $j=$first; $i<$count; ++$i, $j = bcadd($j,1) ) {
-			$ids[$i] = $j;
+		
+		$allocationInfo = array();
+		foreach( array(OIDA::NOTES,OIDA::ALLOCATING_USER_ID) as $k ) {
+			if( !empty($options[$k]) ) $allocationInfo[$k] = $options[$k];
 		}
+		
+		if( $allocationInfo ) {
+			$last = bcadd($first,$count-1);
+			self::writeFile(
+				$this->allocationFile($namespacePath, $first, $last),
+				EarthIT_JSON::prettyEncode($allocationInfo)."\n"
+			);
+		}
+		
+		$ids = array();
+		for( $i=0, $j=$first; $i<$count; ++$i, $j = bcadd($j,1) ) $ids[] = $j;
 		return $ids;
 	}
 	
@@ -126,7 +154,7 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		$info = $this->getInfo($namespacePath);
 		$defaultRegion = isset($info['defaultRegionCode']) ? $info['defaultRegionCode'] : OIDA::REGION_PROD;
 		$reg = isset($options[OIDA::REGION]) ? $options[OIDA::REGION] : $defaultRegion;
-		$ids = $this->allocateFromRegion($namespacePath, $info, $reg, $count);
+		$ids = $this->allocateFromRegion($namespacePath, $info, $reg, $count, $options);
 		$this->updated("Allocated $count from ".self::pathToString($namespacePath)." ending in ".self::last($ids));
 		return $ids;
 	}
@@ -156,17 +184,12 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 	}
 	
 	public function setInfo( array $path, array $info ) {
-		$file = $this->infoFile($path);
-		$dir = dirname($file);
-		if( !is_dir($dir) ) mkdir($dir, 0755, true);
-		if( @file_put_contents($file, EarthIT_JSON::prettyEncode($info)."\n") === false ) {
-			$err = error_get_last();
-			throw new Exception("Failed to write to $file: ".$err['message']);
-		}
+		$infoFile = $this->infoFile($path);
+		$infoJson = EarthIT_JSON::prettyEncode($info)."\n";
+		self::writeFile( $file, $infoJson );
 		if( !file_exists($counterFile = $this->counterFile($path)) ) {
-			file_put_contents($counterFile, "{}\n");
+			self::writeFile($counterFile, "{}\n");
 		}
-		
 		$this->updated("Updated info for ".self::pathToString($path));
 	}
 	
