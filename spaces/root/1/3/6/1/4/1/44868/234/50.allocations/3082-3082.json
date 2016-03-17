@@ -1,0 +1,3 @@
+{
+	"notes": "Remove some of the NOT NULL constraints from the vrarx.managementzoneset table for VRA-347 --jen z"
+}
