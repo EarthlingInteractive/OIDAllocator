@@ -1,5 +1,7 @@
 <?php
 
+use EarthIT_OIDAllocator as OIDA;
+
 class EarthIT_OIDAllocator_PageAction_ShowSpace extends EarthIT_OIDAllocator_PageAction_TemplatePageAction
 {
 	protected $options;
@@ -15,7 +17,9 @@ class EarthIT_OIDAllocator_PageAction_ShowSpace extends EarthIT_OIDAllocator_Pag
 		$crumz = $this->util->getCrumz($this->path);
 		
 		$space = $this->oidAllocator->getInfo($this->path, array(
-			EarthIT_OIDAllocator::INCLUDE_COUNTERS => true,
+			OIDA::INCLUDE_REGIONS     => true,
+			OIDA::INCLUDE_COUNTERS    => true,
+			OIDA::INCLUDE_ALLOCATIONS => true,
 		));
 		
 		$anyRegionsAllocatable = false;
@@ -25,14 +29,17 @@ class EarthIT_OIDAllocator_PageAction_ShowSpace extends EarthIT_OIDAllocator_Pag
 		
 		$newItemIds = isset($this->options['newItemIds']) ? $this->options['newItemIds'] : array();
 		
-		$subSpaces = $this->oidAllocator->findInfo($this->path, array(
-			EarthIT_OIDAllocator::INCLUDE_ROOT => false,
-			EarthIT_OIDAllocator::RECURSE_PAST_INFO => false,
+		$_subSpaces = $this->oidAllocator->findInfo($this->path, array(
+			OIDA::INCLUDE_ROOT => false,
+			OIDA::RECURSE_PAST_INFO => false,
 		));
-		foreach( $subSpaces as $k=>&$subSpace ) {
+		$subSpaces = array();
+		foreach( $_subSpaces as $k=>$subSpace ) {
+			preg_match('/([^.\/]+)$/',$k,$bif);
 			$path = $k == '' ? array() : explode('.',$k);
 			$subSpace['urlPath'] = $this->util->urlPath($path);
-		} unset($subSpace);
+			$subSpaces[$bif[1]] = $subSpace;
+		}
 		
 		if( isset($this->options['title']) ) $title = $this->options['title'];
 		else if( $space ) $title = $space['name'];

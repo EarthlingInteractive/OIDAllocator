@@ -22,11 +22,16 @@
 
 <?php if( isset($space['description']) ) echo "<p>", htmlspecialchars($space['description']), "</p>\n"; ?>
 
-<ul>
-<?php foreach($subSpaces as $subSpace): ?>
-<li><?php echo $PU->linkHtml("/spaces/{$subSpace['urlPath']}", $subSpace['name']); ?></li>
+<?php if($subSpaces): ?>
+<h3>Sub-objects</h3>
+
+<table class="bolly">
+<?php foreach($subSpaces as $k=>$subSpace): ?>
+<tr><td align="right"><?php eht($k); ?></td>
+    <td><?php echo $PU->linkHtml("/spaces/{$subSpace['urlPath']}", $subSpace['name']); ?></td></tr>
 <?php endforeach; ?>
-</ul>
+</table>
+<?php endif; ?>
 
 <?php if(!empty($newItemIds)): ?>
 <h3>Congratulations on your new item <?php eht(count($newItemIds) == 1 ? 'ID' : 'IDs'); ?>!</h3>
@@ -54,7 +59,9 @@
 //]]></script>
 
 <form method="POST" id="allocation-form">
-<table>
+
+<div style="display:inline-block">
+<table class="bolly">
 <thead>
 <tr><th>Name</th><th>Bottom</th><th>Top</th><th>Highest used ID</th>
   <?php if($anyRegionsAllocatable) { ?><th colspan="2">Allocate</th><?php } ?></tr>
@@ -86,26 +93,45 @@ $allocatable = !empty($region['allocatable']);
 </tr>
 <?php endforeach; ?>
 </tbody>
-<tfoot>
-<?php if($anyRegionsAllocatable): ?>
-<tr><th colspan="6">
-  <p>Optional: add a short note about this allocation:</p>
-</th></tr>
-<tr><td colspan="6">
-    <textarea style="width:100%" name="notes" placeholder="Identify ALL THE THINGS! &nbsp; -- Steve"></textarea>
-</td></tr>
-<tr>
-  <td></td>
-  <td></td>
-  <td></td>
-  <td></td>
-  <td colspan="2"><input type="submit" value="Allocate" style="width:100%"/></td>
-</tr>
-<?php endif; ?>
-</tfoot>
 </table>
+
+<?php if($anyRegionsAllocatable): ?>
+<h4>Optional: add a short note about this allocation:</h4>
+<textarea style="width:100%" name="notes" placeholder="Identify ALL THE THINGS! &nbsp; -- Steve"></textarea>
+<div style="text-align:right">
+  <input type="submit" value="Allocate"/>
+</div>
+<?php endif; ?>
+</div>
 
 </form>
 <?php endif; ?>
+
+<?php if($space['allocations']): ?>
+<h3>Allocations</h3>
+
+<table class="bolly">
+  <thead>
+    <tr>
+      <th>Min</th>
+      <th>Max</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+  <?php foreach($space['allocations'] as $k=>$allocation): ?>
+   <?php if(!empty($allocation['notes'])): ?>
+   <?php list($min,$max) = explode('-',$k); ?>
+     <tr>
+       <td align="right"><?php eht($min); ?></td>
+       <td align="right"><?php eht($max); ?></td>
+       <td><?php echo str_replace("\n",'<br />',htmlspecialchars($allocation['notes'])); ?></td>
+     </tr>
+   <?php endif; ?>
+  <?php endforeach; ?>
+  </tbody>
+</table>
+<?php endif; ?>
+
 
 <?php $PU->emitHtmlFooter(); ?>

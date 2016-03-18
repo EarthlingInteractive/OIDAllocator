@@ -62,8 +62,12 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		return $this->infoFile($path, '.counters.json');
 	}
 	
+	protected function allocationDir( array $path ) {
+		return $this->infoFile($path, ".allocations");
+	}
+	
 	protected function allocationFile( array $path, $first, $last ) {
-		return $this->infoFile($path, ".allocations/{$first}-{$last}.json");
+		return $this->allocationDir($path)."/{$first}-{$last}.json";
 	}
 	
 	protected function lockCounterFile( array $path, $lockType ) {
@@ -150,6 +154,21 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		}
 	}
 	
+	protected function getAllocations( array $path ) {
+		$ad = $this->allocationDir($path);
+		if( !is_dir($ad) ) return array();
+		
+		$allocations = array();
+		$files = scandir($ad);
+		natsort($files);
+		foreach( $files as $f ) {
+			if( preg_match('/^(\d+-\d+)\.json$/', $f, $bif) ) {
+				$allocations[$bif[1]] = EarthIT_JSON::decode(file_get_contents("{$ad}/{$f}"));
+			}
+		}
+		return $allocations;
+	}
+	
 	public function allocate( array $namespacePath, $count, array $options=array() ) {
 		$info = $this->getInfo($namespacePath);
 		$defaultRegion = isset($info['defaultRegionCode']) ? $info['defaultRegionCode'] : OIDA::REGION_PROD;
@@ -178,8 +197,12 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		if( $i === false ) return null;
 		$info = EarthIT_JSON::decode($i);
 		if( !empty($options[self::INCLUDE_COUNTERS]) ) {
-			$info = array('counters'=>$this->getCounters($path)) + $info;
+			$info['counters'] = $this->getCounters($path);
 		}
+		if( !empty($options[self::INCLUDE_ALLOCATIONS]) ) {
+			$info['allocations'] = $this->getAllocations($path);
+		}
+		// Regions always get included
 		return $info;
 	}
 	

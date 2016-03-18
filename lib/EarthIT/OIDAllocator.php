@@ -11,6 +11,8 @@ interface EarthIT_OIDAllocator
 	const REGION_TEMP = 'temporary';
 	
 	const INCLUDE_COUNTERS = 'include-counters';
+	const INCLUDE_REGIONS  = 'include-regions';
+	const INCLUDE_ALLOCATIONS = 'include-allocations';
 	// These are also used as keys in allocation info, which is stored,
 	// which is why they are camelCase:
 	const NOTES = 'notes';
