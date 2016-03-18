@@ -7,31 +7,31 @@ span.oid-crumbs {
 	margin: 4px 8px;
 	padding: 4px 8px;
 }
-
-h1, h2, h3, h4, p, textarea {
-	margin-top: 8px;
-	margin-bottom: 8px;
-}
-
 table.bolly {
 	border-collapse: collapse;
-	background-color: rgba(192,128,64,0.1);
-}
-table.bolly tr * {
-	padding-right: 8px;
-	padding-left: 8px;
 }
 
-table.bolly tr *:nth-child(2n+2) {
-	background: rgba(192,128,64,0.1);
+a:link {
+	color: #D9794A;
+	text-decoration: none;
+}
+a:visited {
+	color: #9C4E27;
+}
+a:hover {
+	color: rgba(192,0,0,1);
+	text-decoration: underline;
 }
 table.bolly tbody tr:nth-child(2n+1) {
-	background: rgba(192,128,64,0.1);
-}
-table.bolly td, table.bolly th {
-	border: 1px solid rgba(192,128,64,0.5);
+	background-color: rgba(192,128,64,0.3);
 }
 
+table.bolly tbody td {
+	padding-right: 16px;
+}
+table.bolly thead th {
+	padding-right: 16px;
+}
 td.null {
 	background-color: rgba(128,128,0,0.2);
 }
