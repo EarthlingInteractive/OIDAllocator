@@ -103,6 +103,22 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 			}
 		}
 		
+		if( isset($regionInfo['direction']) ) switch($regionInfo['direction']) {
+			case 'asc':
+				$startEnd = 'bottom';
+				$increment = 1;
+				break;
+			case 'desc':
+				$startEnd = 'top';
+				$increment = -1;
+				break;
+			default:
+				throw new Exception("Unrecognized region direction: {$regionInfo['direction']}; expected 'asc' or 'desc'");
+		} else {
+			$startEnd = 'bottom';
+			$increment = 1;
+		}
+		
 		$ch = $this->lockCounterFile($namespacePath, LOCK_EX);
 		try {
 			$counterFileContent = stream_get_contents($ch);
@@ -110,11 +126,12 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 			$counters = EarthIT_JSON::decode($counterFileContent);
 			// If the key exists in counters, it's the last allocated ID for that region.
 			if( !isset($counters[$regionCode]) ) {
-				$first = isset($regionInfo['first']) ? $regionInfo['first'] : bcadd($regionInfo['bottom'], 1);
+				// bottom+1 or top-1.  Technically bottom is part of the region, but I like to skip it so IDs end with '1'.
+				$first = isset($regionInfo['first']) ? $regionInfo['first'] : bcadd($regionInfo[$startEnd], $increment);
 			} else {
-				$first = bcadd($counters[$regionCode], 1);
+				$first = bcadd($counters[$regionCode], $increment);
 			}
-			$last = bcadd($first, $count-1);
+			$last = bcadd($first,$increment * ($count-1));
 			$counters[$regionCode] = $last;
 			
 			ftruncate($ch,0);
@@ -130,15 +147,20 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		}
 		
 		if( $allocationInfo ) {
-			$last = bcadd($first,$count-1);
+			if( $increment > 0 ) {
+				$min = $first; $max = $last;
+			} else {
+				$min = $last; $max = $first;
+			}
 			self::writeFile(
-				$this->allocationFile($namespacePath, $first, $last),
+				$this->allocationFile($namespacePath, $min, $max),
 				EarthIT_JSON::prettyEncode($allocationInfo)."\n"
 			);
 		}
 		
 		$ids = array();
-		for( $i=0, $j=$first; $i<$count; ++$i, $j = bcadd($j,1) ) $ids[] = $j;
+		for( $i=0, $j=$first; $i<$count; ++$i, $j = bcadd($j,$increment) ) $ids[] = $j;
+
 		return $ids;
 	}
 	
