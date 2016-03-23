@@ -14,6 +14,10 @@
 	background: silver;
 	border: 2px silver inset;
 }
+tr.interesting td:first-child {
+	color: rgb(0,64,0);
+	text-decoration: underline;
+}
 /*]]>*/</style>
 
 <?php $PU->emitView('crumz', $params); ?>
@@ -63,23 +67,38 @@
 <div style="display:inline-block">
 <table class="bolly">
 <thead>
-<tr><th>Name</th><th>Bottom</th><th>Top</th><th>Highest used ID</th>
+<tr><th>Name</th><th>Bottom</th><th>Top</th><th>Last used ID</th>
   <?php if($anyRegionsAllocatable) { ?><th colspan="2">Allocate</th><?php } ?></tr>
 </thead>
 <tbody>
 <?php foreach($space['regions'] as $regionKey=>$region): ?>
 <?php
 
-$highestId = isset($space['counters'][$regionKey]) ?
+$lastUsedId = isset($space['counters'][$regionKey]) ?
 	$space['counters'][$regionKey] : '';
 $allocatable = !empty($region['allocatable']);
 
+$extraInfo = $regionKey;
+$hasInterestingExtraInfo = false;
+if( isset($region['description']) ) {
+	$extraInfo .= ': '.$region['description'];
+	$hasInterestingExtraInfo = true;
+}
+if( isset($region['direction']) and $region['direction'] == 'desc' ) {
+	$extraInfo .= preg_match('/\.$/', $extraInfo) ? '  A' : '; a'; // Add punctuation as necessary
+	$extraInfo .= 'llocates from top to bottom';
+	$hasInterestingExtraInfo = true;
+}
+if( !preg_match('/\.\)?$/', $extraInfo) ) {
+	$extraInfo .= '.';
+}
+
 ?>
-<tr>
+<tr <?php if($hasInterestingExtraInfo): ?> title="<?php eht($extraInfo); ?>" class="interesting"<?php endif;?>>
 <td><?php eht($regionKey); ?></td>
 <td align="right"><?php eht($region['bottom']); ?></td>
 <td align="right"><?php eht($region['top']); ?></td>
-<td align="right"><?php eht($highestId); ?></td>
+<td align="right"><?php eht($lastUsedId); ?></td>
 <?php if($allocatable): ?>
 <td align="right"><input type="text"
   id="region-<?php eht($regionKey); ?>-allocation-request-box"
