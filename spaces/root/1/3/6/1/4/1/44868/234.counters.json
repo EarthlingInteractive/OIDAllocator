@@ -1,3 +1,4 @@
 {
-	"manually-allocated": "6097"
+	"manually-allocated": "6097",
+	"manually-allocated-int32": "2147483647"
 }
