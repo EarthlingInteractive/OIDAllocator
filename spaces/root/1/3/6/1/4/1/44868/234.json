@@ -12,7 +12,21 @@
 		"manually-allocated": {
 			"allocatable":     true,
 			"bottom":        "1100",
-			"top":    "10000000000"
+			"top":     "1073741824",
+			"description": "Manually allocated IDs for use in upgrade scripts"
+		},
+		"manually-allocated-int32": {
+			"allocatable":     true,
+			"bottom":  "1073741824",
+			"top":     "2147483648",
+			"direction":     "desc",
+			"description": "Pseudo-entity IDs for use in (signed) 32-bit fields."
+		},
+		"manually-allocated-2": {
+			"allocatable":     true,
+			"bottom":  "2147483648",
+			"top":    "10000000000",
+			"description": "Much higher manually allocated IDs for use in test/demo data (or for when the lower ones ever run out)"
 		},
 		"local": {
 			"bottom": "10000000000",
