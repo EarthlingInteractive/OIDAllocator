@@ -22,9 +22,14 @@
 			"direction":     "desc",
 			"description": "Pseudo-entity IDs for use in (signed) 32-bit fields."
 		},
+		"padding": {
+			"bottom":  "2147483648",
+			"top":     "3000000000",
+			"description": "Pointlessly reserved space between the top of allocatable int32s and the manually-allocated-2 region"	
+		},
 		"manually-allocated-2": {
 			"allocatable":     true,
-			"bottom":  "2147483648",
+			"bottom":  "3000000000",
 			"top":    "10000000000",
 			"description": "Much higher manually allocated IDs for use in test/demo data (or for when the lower ones ever run out)"
 		},
