@@ -1,0 +1,22 @@
+{
+	"name": "AMG BLC",
+	"regions": {
+		"special": {
+			"bottom":           "0",
+			"top":           "1000"
+		},
+		"manually-allocated": {
+			"allocatable":    true,
+			"bottom":        "1100",
+			"top":     "1000000000"
+		},
+		"local": {
+			"bottom":  "1000000000",
+			"top":     "2000000000"
+		},
+		"production": {
+			"bottom":  "2000000000",
+			"top":     "3000000000"
+		}
+	}
+}
