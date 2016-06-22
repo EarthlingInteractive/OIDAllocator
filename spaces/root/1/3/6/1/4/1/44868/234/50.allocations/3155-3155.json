@@ -1,0 +1,3 @@
+{
+	"notes": "VRA-352: cascade deletes to management zone statistics - used when deleting a version of management zones during revert"
+}
