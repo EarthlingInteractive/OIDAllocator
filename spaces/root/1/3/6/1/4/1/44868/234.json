@@ -33,7 +33,7 @@
 			"top":    "10000000000",
 			"description": "Much higher manually allocated IDs for use in test/demo data (or for when the lower ones ever run out)"
 		},
-		"local": {
+		"buffy": {
 			"bottom": "10000000000",
 			"top":    "20000000000"
 		},
@@ -41,7 +41,7 @@
 			"bottom": "20000000000",
 			"top":    "30000000000"
 		},
-		"buffy": {
+		"local": {
 			"bottom": "30000000000",
 			"top":    "40000000000"
 		},
