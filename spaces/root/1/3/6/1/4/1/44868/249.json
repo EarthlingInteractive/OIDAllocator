@@ -1,0 +1,23 @@
+{
+	"name": "PHPTemplateProject",
+	"regions": {
+		"special": {
+			"bottom":           "0",
+			"top":           "1000"
+		},
+		"manually-allocated": {
+			"allocatable":     true,
+			"bottom":        "1100",
+			"top":     "1073741824",
+			"description": "Manually allocated IDs for use in upgrade scripts"
+		},
+		"local": {
+			"bottom": "10000000000",
+			"top":    "20000000000"
+		},
+		"production": {
+			"bottom": "20000000000",
+			"top":    "30000000000"
+		}
+	}
+}
