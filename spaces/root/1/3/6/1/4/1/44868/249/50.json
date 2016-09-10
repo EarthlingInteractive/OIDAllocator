@@ -1,0 +1,11 @@
+{
+   "name": "PHPTemplateProject upgrade scripts",
+	"regions": {
+		"advisor": {
+			"allocatable": true,
+			"bottom": "1000",
+			"top":    "2000",
+			"first":  "1002"
+		}
+	}
+}
