@@ -13,7 +13,7 @@ runtime_resources := \
 
 resources := ${build_resources} ${runtime_resources}
 
-default: runtime-resources run-tests
+default: runtime-resources
 
 .DELETE_ON_ERROR:
 
