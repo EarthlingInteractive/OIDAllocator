@@ -5,17 +5,50 @@
 			"bottom":           "0",
 			"top":           "1000"
 		},
-		"manually-allocated": {
-			"allocatable":     true,
+		"compatibility": {
+			"allocatable":    false,
 			"bottom":        "1100",
-			"top":     "1073741824",
-			"description": "Manually allocated IDs for use in upgrade scripts"
+			"top":        "1000000",
+			"description": "Reserved for compatibility with projects created before the 1000000-3000000 ranges were defined"
 		},
-		"local": {
+		"manually-allocated-template": {
+			"allocatable":     true,
+			"bottom":     "1000000",
+			"top":        "2000000",
+			"description": "Manually allocated IDs for the template project's upgrade scripts"
+		},
+		"manually-allocated-project": {
+			"allocatable":    false,
+			"bottom":     "2000000",
+			"top":        "3000000",
+			"description": "Manually allocated IDs for specific projects"
+		},
+		"reserved": {
+			"allocatable":    false,
+			"bottom":     "3000000",
+			"top":     "1073741824",
+			"description": "Reserved for future use"
+		},
+		"manually-allocated-int32-project": {
+			"allocatable":    false,
+			"bottom":  "1073741824",
+			"top":     "2147483648",
+			"direction":     "desc",
+			"description": "Pseudo-entity IDs for use in (signed) 32-bit fields."
+		},
+		"reserved2": {
+			"allocatable":    false,
+			"bottom":  "2147483648",
+			"top":    "10000000000",
+			"description": "Reserved for future use"
+		},
+		"production": {
+			"allocatable":    false,
 			"bottom": "10000000000",
 			"top":    "20000000000"
 		},
 		"production": {
+			"allocatable":    false,
 			"bottom": "20000000000",
 			"top":    "30000000000"
 		}
