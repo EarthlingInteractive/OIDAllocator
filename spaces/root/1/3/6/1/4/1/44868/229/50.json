@@ -1,0 +1,11 @@
+{
+   "name": "Align EP upgrade scripts",
+	"regions": {
+		"normal": {
+			"allocatable": true,
+			"bottom": "1000",
+			"top":    "2000",
+			"first":  "1121"
+		}
+	}
+}
