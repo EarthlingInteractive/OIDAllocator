@@ -25,7 +25,8 @@ extends EarthIT_OIDAllocator_PageAction
 		foreach( $this->allocationRequests as $regionKey => $count ) {
 			$_ids = $this->oidAllocator->allocate($this->spacePath, $count, array(
 				OIDA::REGION => $regionKey,
-				OIDA::NOTES => $this->notes
+				OIDA::NOTES => $this->notes,
+				OIDA::ALLOCATION_TIME => date('c'),
 			));
 			$ids = array_merge($ids, $_ids);
 		}

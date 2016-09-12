@@ -17,6 +17,7 @@ interface EarthIT_OIDAllocator
 	// which is why they are camelCase:
 	const NOTES = 'notes';
 	const ALLOCATING_USER_ID = 'allocatingUserId';
+	const ALLOCATION_TIME = 'allocationTime'; // Maps to a ISO 8601 date
 	
 	public function allocate( array $namespacePath, $count, array $options=array() );
 	public function getInfo( array $path, array $options=array() );

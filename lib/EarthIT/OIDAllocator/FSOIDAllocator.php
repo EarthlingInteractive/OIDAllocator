@@ -142,7 +142,7 @@ class EarthIT_OIDAllocator_FSOIDAllocator implements EarthIT_OIDAllocator
 		}
 		
 		$allocationInfo = array();
-		foreach( array(OIDA::NOTES,OIDA::ALLOCATING_USER_ID) as $k ) {
+		foreach( array(OIDA::NOTES,OIDA::ALLOCATING_USER_ID,OIDA::ALLOCATION_TIME) as $k ) {
 			if( !empty($options[$k]) ) $allocationInfo[$k] = $options[$k];
 		}
 		
