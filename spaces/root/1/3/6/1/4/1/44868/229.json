@@ -1,0 +1,127 @@
+{
+	"name": "Align Engagement Platform",
+	"regions": {
+		"special": {
+			"bottom":           "0",
+			"top":           "1000"
+		},
+		"survey-versions": {
+			 "allocatable":    true,
+			 "bottom":       "1000",
+			 "top":          "2000",
+			 "first":        "1000"
+		},
+		"survey-questions": {
+			 "allocatable":    true,
+			 "bottom":       "2000",
+			 "top":          "3000",
+			 "first":        "2000"
+		},
+		"survey-drivers": {
+			 "allocatable":    true,
+			 "bottom":       "3000",
+			 "top":          "4000",
+			 "first":        "3000"
+		},
+		"survey-answer-option-groups": {
+			 "allocatable":    true,
+			 "bottom":       "4000",
+			 "top":          "5000",
+			 "first":        "4000"
+		},
+		"survey-answer-options": {
+			 "allocatable":    true,
+			 "bottom":       "5000",
+			 "top":          "6000",
+			 "first":        "5000"
+		},
+		"facility-groups": {
+			 "allocatable":    true,
+			 "bottom":       "7000",
+			 "top":          "8000",
+			 "first":        "7000"
+		},
+		"nomenclature": {
+			 "allocatable":    true,
+			 "bottom":       "8000",
+			 "top":          "9000",
+			 "first":        "8000"
+		},
+		"users": {
+			 "allocatable":    true,
+			 "bottom":       "9000",
+			 "top":         "10000",
+			 "first":        "9000"
+		},
+		"rasch-stuff": {
+			 "allocatable":    true,
+			 "bottom":      "10000",
+			 "top":         "11000",
+			 "first":       "10000"
+		},
+		"surveyees": {
+			 "allocatable":    true,
+			 "bottom":      "11000",
+			 "top":         "12000",
+			 "first":       "11000"
+		},
+		"surveyee-batches": {
+			 "allocatable":    true,
+			 "bottom":      "12000",
+			 "top":         "13000",
+			 "first":       "12000"
+		},
+		"more-table-specific-ids": {
+			 "allocatable":   false,
+			 "bottom":      "13000",
+			 "top":        "100000",
+			 "description": "Reserved for more thousand-ID ranges for tables."
+		},
+		"initial-sequence": {
+			"allocatable":    false,
+			"bottom":      "100000",
+			"top":        "1000000",
+			"description": "Initial sequence range"	
+		},
+		"template-project": {
+			"allocatable":    false,
+			"bottom":     "1000000",
+			"top":        "2000000",
+			"description": "Reserved for template project IDs"
+		},
+		"manually-allocated-2": {
+			"allocatable":     true,
+			"bottom":     "2000000",
+			"top":        "3000000"
+		},
+		"reserved": {
+			"allocatable":    false,
+			"bottom":     "3000000",
+			"top":     "1073741824",
+			"description": "Reserved for future use"
+		},
+		"manually-allocated-int32": {
+			"allocatable":     true,
+			"bottom":  "1073741824",
+			"top":     "2147483648",
+			"direction":     "desc",
+			"description": "Pseudo-entity IDs for use in (signed) 32-bit fields."
+		},
+		"reserved2": {
+			"allocatable":    false,
+			"bottom":  "2147483648",
+			"top":    "10000000000",
+			"description": "Reserved for future use"
+		},
+		"local-dev": {
+			"allocatable":    false,
+			"bottom": "10000000000",
+			"top":    "20000000000"
+		},
+		"production": {
+			"allocatable":    false,
+			"bottom": "20000000000",
+			"top":    "30000000000"
+		}
+	}
+}
