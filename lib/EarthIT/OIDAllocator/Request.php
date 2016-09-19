@@ -136,7 +136,7 @@ class EarthIT_OIDAllocator_Request
 			preg_match( '/^([^\s;]+)/', $contentType, $bif );
 			$baseContentType = $bif[1];
 			// Assuming charset=utf8, so not bothering to parse that out.
-				
+			
 			switch( $baseContentType ) {
 			case 'application/x-www-form-urlencoded':
 				$requestContentObject = $this->superGlobals['POST'];

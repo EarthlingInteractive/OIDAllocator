@@ -15,6 +15,15 @@ class EarthIT_OIDAllocator_Router extends EarthIT_OIDAllocator_Component
 		return $rc->newInstanceArgs($args);
 	}
 	
+	protected function createRestAction( $actionName /* followed by action-specific arguments */ ) {
+		$args = func_get_args();
+		/* $actionName = */ array_shift($args);
+		array_unshift($args, $this->registry);
+		$className = "EarthIT_OIDAllocator_RESTAction_{$actionName}";
+		$rc = new ReflectionClass($className);
+		return $rc->newInstanceArgs($args);
+	}
+	
 	public function requestToAction( EarthIT_OIDAllocator_Request $req ) {
 		$path = $req->getPathInfo();
 		if( $path == '/' ) {
@@ -51,7 +60,18 @@ class EarthIT_OIDAllocator_Router extends EarthIT_OIDAllocator_Component
 				$options['newItemIds'] = $newItemIds;
 				return $this->createPageAction('ShowSpace', $spacePath, $options);
 			case 'POST':
-				return $this->createPageAction('AllocateIDs', $spacePath, $req->getParams());
+				return EarthIT_OIDAllocator_PageAction_AllocateIDs::parseForm($this->registry, $spacePath, $req->getParams());
+			}
+		} else if(
+			preg_match('#^/api/spaces/((?:[a-zA-Z0-9]+/)+)allocations$#',$path,$bif)
+		) {
+			$spacePath = explode('/', $bif[1]);
+			array_pop($spacePath);
+			switch( $req->requestMethod ) {
+			case 'POST':
+				$params = $req->getRequestContentObject();
+				if( $params === null ) $params = array();
+				return EarthIT_OIDAllocator_PageAction_AllocateIDs::parseJso($this->registry, $spacePath, $params);
 			}
 		} else if(
 			preg_match('#^/api([;/].*)#',$path,$bif) and
