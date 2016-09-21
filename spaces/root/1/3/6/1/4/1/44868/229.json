@@ -106,9 +106,14 @@
 			 "bottom":      "20000",
 			 "top":         "21000"
 		},
+		"aggregations": {
+			 "allocatable":    true,
+			 "bottom":      "21000",
+			 "top":         "22000"
+		},
 		"more-table-specific-ids": {
 			 "allocatable":   false,
-			 "bottom":      "21000",
+			 "bottom":      "22000",
 			 "top":        "100000",
 			 "description": "Reserved for more thousand-ID ranges for tables."
 		},
