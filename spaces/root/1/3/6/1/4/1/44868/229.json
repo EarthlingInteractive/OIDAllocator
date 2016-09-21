@@ -71,9 +71,44 @@
 			 "top":         "13000",
 			 "first":       "12000"
 		},
+		"cycles": {
+			 "allocatable":    true,
+			 "bottom":      "14000",
+			 "top":         "15000"
+		},
+		"cycle-groups": {
+			 "allocatable":    true,
+			 "bottom":      "15000",
+			 "top":         "16000"
+		},
+		"timelines": {
+			 "allocatable":    true,
+			 "bottom":      "16000",
+			 "top":         "17000"
+		},
+		"timeline-steps": {
+			 "allocatable":    true,
+			 "bottom":      "17000",
+			 "top":         "18000"
+		},
+		"timeline-tools": {
+			 "allocatable":    true,
+			 "bottom":      "18000",
+			 "top":         "19000"
+		},
+		"timeline-tool-links": {
+			 "allocatable":    true,
+			 "bottom":      "19000",
+			 "top":         "20000"
+		},
+		"facility-cycle-groups": {
+			 "allocatable":    true,
+			 "bottom":      "20000",
+			 "top":         "21000"
+		},
 		"more-table-specific-ids": {
 			 "allocatable":   false,
-			 "bottom":      "13000",
+			 "bottom":      "21000",
 			 "top":        "100000",
 			 "description": "Reserved for more thousand-ID ranges for tables."
 		},
