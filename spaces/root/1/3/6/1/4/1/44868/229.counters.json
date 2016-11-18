@@ -3,11 +3,12 @@
 	"survey-questions": "2038",
 	"survey-drivers": "3008",
 	"survey-answer-option-groups": "4009",
-	"survey-answer-options": "5057",
+	"survey-answer-options": "5063",
 	"facility-groups": "7004",
 	"nomenclature": "8003",
 	"users": "9001",
 	"rasch-stuff": "10099",
 	"surveyees": "11099",
-	"surveyee-batches": "12006"
+	"surveyee-batches": "12006",
+	"manually-allocated-2": "2000126"
 }
