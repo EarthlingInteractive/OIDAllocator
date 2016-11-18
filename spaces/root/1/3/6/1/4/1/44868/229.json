@@ -140,11 +140,15 @@
 			"bottom":     "2000000",
 			"top":        "3000000"
 		},
-		"reserved": {
+		"production": {
 			"allocatable":    false,
 			"bottom":     "3000000",
-			"top":     "1073741824",
-			"description": "Reserved for future use"
+			"top":     "1000000000",
+			"description": "Production server"
+		},
+		"reserved-3": {
+			"bottom":  "1000000000",
+			"top":     "1073741824"
 		},
 		"manually-allocated-int32": {
 			"allocatable":     true,
@@ -164,10 +168,11 @@
 			"bottom": "10000000000",
 			"top":    "20000000000"
 		},
-		"production": {
+		"reserved": {
 			"allocatable":    false,
 			"bottom": "20000000000",
-			"top":    "30000000000"
+			"top":    "30000000000",
+			"description": "Reserved for future use (possibly for if production ever runs out)"	
 		},
 		"stage": {
 			"allocatable":    false,
