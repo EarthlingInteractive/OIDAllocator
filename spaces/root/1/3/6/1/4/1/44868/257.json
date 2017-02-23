@@ -1,5 +1,6 @@
 {
 	"name": "4909 Tasks",
+	"description": "A.k.a. M4909T-*",
 	"regions": {
 		"normal": {
 			"allocatable": true,
