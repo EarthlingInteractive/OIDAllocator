@@ -1,0 +1,10 @@
+{
+	"name": "4909 Tasks",
+	"regions": {
+		"normal": {
+			"allocatable": true,
+			"bottom":         "0",
+			"top":      "1000000"
+		}
+	}
+}
