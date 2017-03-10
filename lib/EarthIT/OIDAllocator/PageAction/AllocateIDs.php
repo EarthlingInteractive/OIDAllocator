@@ -23,7 +23,8 @@ extends EarthIT_OIDAllocator_PageAction
 	public static function parseForm( EarthIT_OIDAllocator_Registry $reg, array $spacePath, array $params ) {
 		$allocationRequests = array();
 		$notes = isset($params['notes']) ? trim($params['notes']) : '';
-		foreach( $params['regions'] as $regionKey=>$region ) {
+		$regions = isset($params['regions']) ? $params['regions'] : array();
+		foreach( $regions as $regionKey=>$region ) {
 			if( isset($region['allocationRequest']) and ($r = $region['allocationRequest']) > 0 ) {
 				$allocationRequests[] = array('size'=>$r, 'regionCode'=>$regionKey, 'notes'=>$notes);
 			}
