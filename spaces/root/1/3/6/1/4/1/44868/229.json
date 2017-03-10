@@ -6,122 +6,122 @@
 			"top":           "1000"
 		},
 		"survey-versions": {
-			 "allocatable":    true,
-			 "bottom":       "1000",
-			 "top":          "2000",
-			 "first":        "1000"
+			"allocatable":    true,
+			"bottom":       "1000",
+			"top":          "2000",
+			"first":        "1000"
 		},
 		"survey-questions": {
-			 "allocatable":    true,
-			 "bottom":       "2000",
-			 "top":          "3000",
-			 "first":        "2000"
+			"allocatable":    true,
+			"bottom":       "2000",
+			"top":          "3000",
+			"first":        "2000"
 		},
 		"survey-drivers": {
-			 "allocatable":    true,
-			 "bottom":       "3000",
-			 "top":          "4000",
-			 "first":        "3000"
+			"allocatable":    true,
+			"bottom":       "3000",
+			"top":          "4000",
+			"first":        "3000"
 		},
 		"survey-answer-option-groups": {
-			 "allocatable":    true,
-			 "bottom":       "4000",
-			 "top":          "5000",
-			 "first":        "4000"
+			"allocatable":    true,
+			"bottom":       "4000",
+			"top":          "5000",
+			"first":        "4000"
 		},
 		"survey-answer-options": {
-			 "allocatable":    true,
-			 "bottom":       "5000",
-			 "top":          "6000",
-			 "first":        "5000"
+			"allocatable":    true,
+			"bottom":       "5000",
+			"top":          "6000",
+			"first":        "5000"
 		},
 		"facility-groups": {
-			 "allocatable":    true,
-			 "bottom":       "7000",
-			 "top":          "8000",
-			 "first":        "7000"
+			"allocatable":    true,
+			"bottom":       "7000",
+			"top":          "8000",
+			"first":        "7000"
 		},
 		"nomenclature": {
-			 "allocatable":    true,
-			 "bottom":       "8000",
-			 "top":          "9000",
-			 "first":        "8000"
+			"allocatable":    true,
+			"bottom":       "8000",
+			"top":          "9000",
+			"first":        "8000"
 		},
 		"users": {
-			 "allocatable":    true,
-			 "bottom":       "9000",
-			 "top":         "10000",
-			 "first":        "9000"
+			"allocatable":    true,
+			"bottom":       "9000",
+			"top":         "10000",
+			"first":        "9000"
 		},
 		"rasch-stuff": {
-			 "allocatable":    true,
-			 "bottom":      "10000",
-			 "top":         "11000",
-			 "first":       "10000"
+			"allocatable":    true,
+			"bottom":      "10000",
+			"top":         "11000",
+			"first":       "10000"
 		},
 		"surveyees": {
-			 "allocatable":    true,
-			 "bottom":      "11000",
-			 "top":         "12000",
-			 "first":       "11000"
+			"allocatable":    true,
+			"bottom":      "11000",
+			"top":         "12000",
+			"first":       "11000"
 		},
 		"surveyee-batches": {
-			 "allocatable":    true,
-			 "bottom":      "12000",
-			 "top":         "13000",
-			 "first":       "12000"
+			"allocatable":    true,
+			"bottom":      "12000",
+			"top":         "13000",
+			"first":       "12000"
 		},
 		"cycles": {
-			 "allocatable":    true,
-			 "bottom":      "14000",
-			 "top":         "15000"
+			"allocatable":    true,
+			"bottom":      "14000",
+			"top":         "15000"
 		},
 		"cycle-groups": {
-			 "allocatable":    true,
-			 "bottom":      "15000",
-			 "top":         "16000"
+			"allocatable":    true,
+			"bottom":      "15000",
+			"top":         "16000"
 		},
 		"timelines": {
-			 "allocatable":    true,
-			 "bottom":      "16000",
-			 "top":         "17000"
+			"allocatable":    true,
+			"bottom":      "16000",
+			"top":         "17000"
 		},
 		"timeline-steps": {
-			 "allocatable":    true,
-			 "bottom":      "17000",
-			 "top":         "18000"
+			"allocatable":    true,
+			"bottom":      "17000",
+			"top":         "18000"
 		},
 		"timeline-tools": {
-			 "allocatable":    true,
-			 "bottom":      "18000",
-			 "top":         "19000"
+			"allocatable":    true,
+			"bottom":      "18000",
+			"top":         "19000"
 		},
 		"timeline-tool-links": {
-			 "allocatable":    true,
-			 "bottom":      "19000",
-			 "top":         "20000"
+			"allocatable":    true,
+			"bottom":      "19000",
+			"top":         "20000"
 		},
 		"facility-cycle-groups": {
-			 "allocatable":    true,
-			 "bottom":      "20000",
-			 "top":         "21000"
+			"allocatable":    true,
+			"bottom":      "20000",
+			"top":         "21000"
 		},
 		"aggregations": {
-			 "allocatable":    true,
-			 "bottom":      "21000",
-			 "top":         "22000"
+			"allocatable":    true,
+			"bottom":      "21000",
+			"top":         "22000"
 		},
 		"more-table-specific-ids": {
-			 "allocatable":   false,
-			 "bottom":      "22000",
-			 "top":        "100000",
-			 "description": "Reserved for more thousand-ID ranges for tables."
+			"allocatable":   false,
+			"bottom":      "22000",
+			"top":        "100000",
+			"description": "Reserved for more thousand-ID ranges for tables."
 		},
 		"initial-stage": {
-			 "allocatable":   false,
-			 "bottom":     "100000",
-			 "top":        "200000",
-			 "description": "The stage server has started using these, so it gets them."
+			"allocatable":   false,
+			"bottom":     "100000",
+			"top":        "200000",
+			"description": "The stage server has started using these, so it gets them."
 		},
 		"reserved-2": {
 			"allocatable":    false,
