@@ -111,9 +111,15 @@
 			"bottom":      "21000",
 			"top":         "22000"
 		},
-		"more-table-specific-ids": {
+		"remapped-align-email-id-numbers": {
 			"allocatable":   false,
 			"bottom":      "22000",
+			"top":         "23000",
+			"description": "Mapped to Align E-mail ID Numbers 10000-11000 (ID = AEIN + 12000)."
+		},
+		"more-table-specific-ids": {
+			"allocatable":   false,
+			"bottom":      "23000",
 			"top":        "100000",
 			"description": "Reserved for more thousand-ID ranges for tables."
 		},
