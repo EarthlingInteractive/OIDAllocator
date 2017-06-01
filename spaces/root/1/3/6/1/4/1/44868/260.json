@@ -1,0 +1,16 @@
+{
+	"name": "Workshop Items",
+	"regions": {
+		"special": {
+			"allocatable": false,
+			"bottom":           "0",
+			"top":           "1000"
+		},
+		"solar-panels": {
+			"allocatable": true,
+			"description": "IDs for homemade solar panels",
+			"bottom":        "2000",
+			"top":           "3000"
+		}
+	}
+}
